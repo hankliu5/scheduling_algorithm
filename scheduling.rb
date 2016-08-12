@@ -1,18 +1,18 @@
 module Scheduling
   # Longest Processing Time Scheduling
-  def Scheduling.lpt_scheduling schedule, num_processor
+  def self.lpt_scheduling schedule, num_processor
     schedule.sort! { |a, b| b <=> a } # sort by descending order
     Scheduling.list_scheduling(schedule, num_processor)
   end
 
   # Shortest Processing Time Scheduling
-  def Scheduling.spt_scheduling schedule, num_processor
+  def self.spt_scheduling schedule, num_processor
     schedule.sort!
     Scheduling.list_scheduling(schedule, num_processor)
   end
 
   # List Scheduling
-  def Scheduling.list_scheduling schedule, num_processor
+  def self.list_scheduling schedule, num_processor
     processor = Array.new(num_processor, 0)
     total_c = Array.new(num_processor, 0)
     objective_arr = Array.new(num_processor) { Array.new }
@@ -22,17 +22,34 @@ module Scheduling
       total_c[j] += processor[j]
       objective_arr[j] << Scheduling.convert_int_to_char(i)
     end
-    return processor, total_c, objective_arr
+    self.print_result(processor, total_c, objective_arr)
   end
 
-  def Scheduling.convert_int_to_char num
-    char = (num % 26 + 65).chr
+  def self.convert_int_to_char n
+    n += 1
+    string = ""
+    while n > 0 do
+      n -= 1
+      string = (n % 26 + 65).chr + string
+      n -= n % 26
+      n /= 26
+    end
+    return string
   end
 
-  def Scheduling.print_current_schedule schedule
+  def self.print_current_schedule schedule
     puts "Current schedule:"
     (0...schedule.length).each do |i|
       puts "#{Scheduling.convert_int_to_char(i)}: #{schedule[i]}"
+    end
+  end
+
+  def self.print_result processor, total_c, objective_arr
+    (0...processor.length).each do |i|
+      puts
+      puts "Works in processor #{i + 1}: #{objective_arr[i].to_s}"
+      puts "Time consumes by processor #{i + 1}: #{processor[i]}"
+      puts "Total time comsumption by processor #{i + 1}: #{total_c[i]}"
     end
   end
 end
