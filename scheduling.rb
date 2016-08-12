@@ -25,6 +25,37 @@ module Scheduling
     self.print_result(processor, total_c, objective_arr)
   end
 
+  def self.mc_naughton schedule, num_processor
+    average_c_max = schedule.reduce(:+) / num_processor
+    processor = Array.new(num_processor, 0)
+    total_c = Array.new(num_processor, 0)
+    objective_arr = Array.new(num_processor) { Array.new }
+    j = 0
+    (0...schedule.length).each do |i|
+      if (processor[j] + schedule[i]) <= average_c_max
+        processor[j] += schedule[i]
+        total_c[j] += processor[j]
+        objective_arr[j] << Scheduling.convert_int_to_char(i)
+      elsif j == num_processor - 1
+        processor[j] += schedule[i]
+        total_c[j] += processor[j]
+        objective_arr[j] << Scheduling.convert_int_to_char(i)
+      else
+        difference = average_c_max.floor - processor[j]
+        schedule[i] -= difference
+        objective_arr[j] << "#{Scheduling.convert_int_to_char(i)} (last #{difference} hour(s))"
+        processor[j] += difference
+
+        j += 1
+
+        processor[j] += schedule[i]
+        total_c[j] += processor[j]
+        objective_arr[j] << "#{Scheduling.convert_int_to_char(i)} (first #{schedule[i]} hour(s))"
+      end
+    end
+    self.print_result(processor, total_c, objective_arr)
+  end
+
   def self.convert_int_to_char n
     n += 1
     string = ""
