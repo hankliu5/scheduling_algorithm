@@ -14,13 +14,18 @@ end
 def list_scheduling schedule, num_processor
   processor = Array.new(num_processor, 0)
   total_c = Array.new(num_processor, 0)
-  # objective_arr = Array.new(num_processor)
-  schedule.each do |obj|
-    i = processor.index(processor.min)
-    processor[i] += obj
-    total_c[i] += processor[i]
+  objective_arr = Array.new(num_processor) { Array.new }
+  (0...schedule.length).each do |i|
+    j = processor.index(processor.min)
+    processor[j] += schedule[i]
+    total_c[j] += processor[j]
+    objective_arr[j] << convert_int_to_char(i)
   end
-  return processor, total_c
+  return processor, total_c, objective_arr
+end
+
+def convert_int_to_char num
+  char = (num % 26 + 65).chr
 end
 
 arr = [4, 9, 12, 1, 3, 5, 9, 10, 8, 11, 6, 6]
