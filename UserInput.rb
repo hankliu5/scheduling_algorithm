@@ -33,6 +33,9 @@ loop do
       if number.to_s != input
         puts "please enter an integer"
         next
+      elsif number <= 0
+        puts "please enter an integer which is greater than zero"
+        next
       end
       input_ary << number
     end
