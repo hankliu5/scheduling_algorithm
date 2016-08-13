@@ -69,7 +69,8 @@ end
 puts "\nNow, choose one method to plan your schedules (enter \"e\" to exit)"
 
 loop do
-  puts "\n1. List Scheduling\n2. Longest Processing Time Scheduling\n3. Shortest Processing Time Scheduling\n4. \"e\" to exit"
+  puts "\n1. List Scheduling\n2. Longest Processing Time Scheduling\n3. Shortest Processing Time Scheduling\n4. McNaughton Scheduling Algorithm\n\"e\" to exit"
+
   input = gets.chomp
   case input
   when "1"
@@ -81,6 +82,9 @@ loop do
   when "3"
     puts "Working on Shortest Processing Time Scheduling..."
     Scheduling.spt_scheduling(input_ary, num_processor)
+  when "4"
+    puts "Working on McNaughton Scheduling Algorithm..."
+    Scheduling.mc_naughton(input_ary, num_processor)
   when "e"
     puts "Exiting..."
     break
